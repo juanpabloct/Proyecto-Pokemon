@@ -1,33 +1,22 @@
-import { useEffect, useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import './App.css'
 import { useSelector } from 'react-redux'
-import { pokemon } from './store/reducerPokemon/thunkPokemon'
+import { thunkPokemon } from './store/reducerPokemon/thunkPokemon'
 function App() {
   const dispatch=useDispatch()
-useEffect(()=>{
-  dispatch(pokemon())
-}, [])
-const {pokemons}=useSelector((state)=>state.pokemon)
-const {page}=useSelector((state)=>state.pokemon)
-const {loading}=useSelector((state)=>state.pokemon)
-console.log(loading);
-if (!!loading) {
-  return (
-    <div className="App">
-      Cargando
-    </div>
-  )
-}
-else if (!loading){
-  return (
-    <div className="App">
-{pokemons.map((value, index)=><h1 key={index} style={{textTransform:"capitalize"}}>{value.name}</h1>)}
-    <button disabled={loading} onClick={()=>dispatch(pokemon(page))}>Siguiente Pagina</button>
+  const {pokemons}=useSelector((state)=>state)
+  const {page}=useSelector((state)=>state)
+  const {isLoading}=useSelector((state)=>state)
+  useEffect(()=>{
+    dispatch(thunkPokemon())
+    console.log(isLoading);
+  }, [])
+  return <div>
+    <h3>Cargando: { isLoading } </h3>
+    <div>{pokemons.map((pokemon, index)=><li>{pokemon.name}</li>)}</div>
+    <button disabled={isLoading} onClick={()=>dispatch(thunkPokemon(page))}>Siguiente</button>
   </div>
-  )
-}
 }
 
 export default App

@@ -1,10 +1,10 @@
-import { isLoading, setPokemons } from "./SearchpokemonSlice"
+import { allPokemons, isLoading } from "./PokemonSlice"
 
-export const pokemon=(page=0)=>{
-    return  async (dispatch, getState)=>{
+export const thunkPokemon=(page=0)=>{
+    const traerPokemons=async (dispatch, action)=>{
         dispatch(isLoading())
-        const allPokemons=await (await fetch(`https://pokeapi.co/api/v2/pokemon?limit=11&offset=${page*11}`)).json()
-
-        return dispatch(setPokemons({pokemons:allPokemons.results, page}))
+        const {results}=await (await fetch(`https://pokeapi.co/api/v2/pokemon?limit=10&offset=${page*10}`)).json()
+        dispatch(allPokemons({pokemons:results, page:page+1}))
     }
+    return traerPokemons
 }
