@@ -10,7 +10,8 @@ function App() {
   const {isLoading}=useSelector((state)=>state)
   useEffect(()=>{
     dispatch(thunkPokemon())
-    console.log(isLoading);
+    console.log(pokemons);
+    
   }, [])
   return <div>
     <h3>Cargando: { isLoading } </h3>
